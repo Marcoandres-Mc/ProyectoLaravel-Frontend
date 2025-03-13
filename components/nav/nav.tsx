@@ -1,5 +1,6 @@
 "use client";
 import * as React from 'react';
+import { useState } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -19,6 +20,15 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import Link from 'next/link'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import '../../styles/globals.css'
 import {
   Avatar,
@@ -88,7 +98,11 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
 }));
 
-export default function PersistentDrawerLeft() {
+interface PersistentDrawerLeftProps {
+  children: React.ReactNode;
+}
+
+export default function PersistentDrawerLeft({ children }: PersistentDrawerLeftProps) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -99,6 +113,33 @@ export default function PersistentDrawerLeft() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  interface Categoria {
+    nombre: string;
+    nombreVisible: string;
+    ruta?:string;
+  }
+  const categoriasIniciales: Categoria[] = [{
+    nombre: 'presupuesto',
+    nombreVisible: 'Presupuesto',
+    ruta: '/presupuesto',
+  },
+  {
+    nombre: 'reportes',
+    nombreVisible: 'Reportes',
+    ruta: '/reportes',
+
+  },
+  {
+    nombre: 'cuentas',
+    nombreVisible: 'Todas las cuentas',
+    ruta: '/cuentas',
+  }];
+
+
+  const [categorias, setCategorias] = useState<Categoria[]>(categoriasIniciales);
+
+
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -140,34 +181,49 @@ export default function PersistentDrawerLeft() {
         open={open}
       >
         <DrawerHeader >
-              <Avatar className='m-2'>
-                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <div className='flex flex-col m-2 justify-center align-center'>
-                <h2 className='m-0'>
-                  Marco
-                </h2>
-                <p className='m-0'>
-                  correo@gmail.com
-                </p>
-              </div>
+                <DropdownMenu>
+                <DropdownMenuTrigger className="text-white bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded">
+                  <div className='flex flex-row'>
+                    <Avatar className='m-2'>
+                      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                    <div className='flex flex-col m-2 justify-center align-center'>
+                      <h2 className='m-0'>
+                        Marco
+                      </h2>
+                      <p className='m-0'>
+                        correo@gmail.com
+                      </p>
+                    </div>
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="bg-white shadow-lg rounded-md p-2 mt-2 w-48 p-8" style={{ zIndex: 9999, position: 'absolute', top: '300', right: '300' }}>
+                  <DropdownMenuLabel className="text-gray-700 font-semibold">My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator className="border-t my-2" />
+                  <DropdownMenuItem className="text-gray-700 hover:bg-gray-100 p-2 rounded">Profile</DropdownMenuItem>
+                  <DropdownMenuItem className="text-gray-700 hover:bg-gray-100 p-2 rounded">Billing</DropdownMenuItem>
+                  <DropdownMenuItem className="text-gray-700 hover:bg-gray-100 p-2 rounded">Team</DropdownMenuItem>
+                  <DropdownMenuItem className="text-gray-700 hover:bg-gray-100 p-2 rounded">Subscription</DropdownMenuItem>
+                </DropdownMenuContent>
+                </DropdownMenu>
+
               
           
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
+          
         </DrawerHeader>
         
         <Divider />
         <List>
-          {['Presupuesto', 'Reportes', 'Todas las cuentas', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
+          {categorias.map((categoria, index) => (
+            <ListItem key={index} disablePadding>
+              <ListItemButton className='flex justify-center flex-row'>
+                <Link className='flex justify-center flex-row' href={categoria.ruta || '/'} passHref>
+                  <ListItemIcon>
+                    <InboxIcon />
+                  </ListItemIcon>
+                <ListItemText primary={categoria.nombreVisible} />
+                </Link>
               </ListItemButton>
             </ListItem>
           ))}
@@ -185,9 +241,13 @@ export default function PersistentDrawerLeft() {
             </ListItem>
           ))}
         </List>
+        <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </IconButton>
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
+        {children}
         
       </Main>
     </Box>
