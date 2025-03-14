@@ -21,20 +21,9 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Link from 'next/link'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import '../../styles/globals.css'
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+import MenuPerfil from '../material UI/menuPerfil';
 
 const drawerWidth = 240;
 
@@ -181,37 +170,17 @@ export default function PersistentDrawerLeft({ children }: PersistentDrawerLeftP
         open={open}
       >
         <DrawerHeader >
-                <DropdownMenu>
-                <DropdownMenuTrigger className="text-white bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded">
-                  <div className='flex flex-row'>
-                    <Avatar className='m-2'>
-                      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                    <div className='flex flex-col m-2 justify-center align-center'>
-                      <h2 className='m-0'>
-                        Marco
-                      </h2>
-                      <p className='m-0'>
-                        correo@gmail.com
-                      </p>
-                    </div>
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="bg-white shadow-lg rounded-md p-2 mt-2 w-48 p-8" style={{ zIndex: 9999, position: 'absolute', top: '300', right: '300' }}>
-                  <DropdownMenuLabel className="text-gray-700 font-semibold">My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator className="border-t my-2" />
-                  <DropdownMenuItem className="text-gray-700 hover:bg-gray-100 p-2 rounded">Profile</DropdownMenuItem>
-                  <DropdownMenuItem className="text-gray-700 hover:bg-gray-100 p-2 rounded">Billing</DropdownMenuItem>
-                  <DropdownMenuItem className="text-gray-700 hover:bg-gray-100 p-2 rounded">Team</DropdownMenuItem>
-                  <DropdownMenuItem className="text-gray-700 hover:bg-gray-100 p-2 rounded">Subscription</DropdownMenuItem>
-                </DropdownMenuContent>
-                </DropdownMenu>
+          <MenuPerfil>
+            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+          </MenuPerfil>
+          <div className='flex flex-col align-center justify-center'>
+              <h3 className='text-black'>Marcoandres</h3>
+              <p className='text-black'>marcoandresha@gmail.com</p>
+            </div>
+          </DrawerHeader>
 
-              
           
-          
-        </DrawerHeader>
+        
         
         <Divider />
         <List>
